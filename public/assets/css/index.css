@@ -1,0 +1,125 @@
+/* .main {
+    min-height: 70vh;
+}
+
+section > h2 {
+    margin: 1rem;
+}
+
+.items {
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 1.5rem;
+}
+
+.item-box {
+    margin: 1rem 0 1rem 0;
+    width: 30%;
+    height: 200px;
+    text-align: center;
+}
+
+.btn {
+    margin: 0;
+    padding: 0.2rem;
+    background-color: bisque;
+}
+
+.form {
+    width: 80%;
+    text-align: center;
+    margin: auto;
+    font-size: 1.5rem;
+    display: flex;
+    justify-content: center;
+}
+
+.form label {
+    width: 30%;
+}
+
+.btn {
+    width: 30%;
+    height: 20px;
+} */
+body {
+    padding: 1rem;
+}
+
+.wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.wrapper h2 > button {
+    margin-left: 0.5rem;
+}
+
+.search-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.search-bar form {
+    margin-left: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.search-bar form div {
+    margin: 0 !important;
+    margin-right: 0.5rem !important;
+}
+
+.search-bar form select {
+    width: 150px;
+}
+
+section {
+    padding: 1rem;
+    background-color: whitesmoke;
+    min-height: 70vh;
+}
+
+.table th {
+    vertical-align: middle;
+}
+
+.table td {
+    vertical-align: middle;
+}
+
+section h2 {
+    font-size: 1.5rem;
+}
+
+.nav {
+    width: 100%;
+}
+
+tr th {
+    text-align: center;
+}
+td {
+    text-align: center;
+    overflow: hidden;
+}
+
+.card {
+    margin: 0 auto;
+}
+
+.btns {
+    display: flex;
+    justify-content: center;
+}
+
+.related_items {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 50vw;
+}
