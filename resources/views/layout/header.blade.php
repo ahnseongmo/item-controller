@@ -1,1 +1,1 @@
-<header class="header">@include("layout.nav")</header>
+<header class="container pb-2">@include("layout.nav")</header>

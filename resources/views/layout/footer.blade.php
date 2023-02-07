@@ -1,4 +1,4 @@
-<footer>
+<footer class='container'>
     <blockquote class="blockquote mb-0">
         <p>Footer : weird sector</p>
         <div class="blockquote-footer">

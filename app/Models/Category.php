@@ -8,6 +8,10 @@ class Category extends Model
         'brand_id',
     ];
 
+    protected $_hidden = [
+        "brand_id",
+    ];
+
     // 하나의 카테고리에는 아이템이 무제한으로 있을 수 있다.
     public function items()
     {

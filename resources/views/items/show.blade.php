@@ -1,6 +1,6 @@
 @extends('layout.app') @section('title', 'ProductController-DETAIL')
 @section("content")
-<section class="product-card">
+<section class="container">
     <h2>Product Detail</h2>
     <div class="card" style="width: 70%">
         <img src="{{ $item->image }}" class="card-img-top" alt="..." />

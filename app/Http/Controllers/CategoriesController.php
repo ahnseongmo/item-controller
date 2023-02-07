@@ -11,9 +11,9 @@ class CategoriesController extends Controller
 {
     public function index()
     {
-        // $categories = Category::get();
         $categories = Category::join('brands', 'categories.brand_id', '=', 'brands.id')->select('categories.*', 'brands.id as brand_id', 'brands.name as brand_name')->get();
-        return view('categories.index', ['categories' => $categories]);
+        $brands = Brand::get();
+        return view('categories.index', ['categories' => $categories, 'brands' => $brands]);
     }
 
     // 생성하기 페이지 보여주기
@@ -23,12 +23,34 @@ class CategoriesController extends Controller
         return view('categories.create', ['brands' => $brands]);
     }
 
-    // 카테고리 수정 페이지 보여주기
     public function edit($id)
     {
-        $brands = Brand::get();
-        $category = Category::find($id)->get()->first();
-        return view('categories.edit', ['brands' => $brands, 'category' => $category]);
+        $category = Category::find($id);
+        // 해당 카테고리 아이디가 없을 떄
+        if($category===null){
+            return response()->json([
+                'result'=>false
+            ], 404);
+        }
+        // 기존과 동일한 카테고리일 때
+        if($category->name==request()->name && $category->brand_id == request()->brand_id){
+            return response()->json([
+                'result'=>false
+            ], 409);
+        }
+        // 기존과 존재하는 카테고리일 때
+        $exist_category = Category::where('name', request()->name)->where('brand_id', request()->brand_id)->get();
+        if(count($exist_category)>0){
+            return response()->json([
+                'result'=>false,
+            ], 409);
+        }
+        $category->name = request()->name;
+        $category->brand_id = request()->brand_id;
+        $category->save();
+        return response()->json([
+            'result'=>true,
+            'data'=>$category], 200);
     }
 
     // 새 카테고리 저장하기
@@ -36,14 +58,17 @@ class CategoriesController extends Controller
     {
         $categories = Category::where('name', request()->name)->where('brand_id', request()->brand_id)->get();
         if (count($categories) > 0) {
-            return redirect()->back()->withErrors(['msg' => '이미 존재하는 카테고리 조합입니다.']);
+            return response()->json([
+                'result'=>false,], 409);
         } else {
             $category = new Category([
                 'name' => request()->name,
                 'brand_id' => request()->brand_id,
             ]);
             $category->save();
-            return redirect('/category');
+            return response()->json([
+                'result'=>true,
+                'data'=>$category], 200);
         }
     }
 
@@ -53,7 +78,18 @@ class CategoriesController extends Controller
             ->where('categories.name', '=', $category_name)
             ->select('brands.id as brand_id', 'brands.name as brand_name')
             ->distinct()->get();
-        return $available_brand;
+        $result = ["data" => $available_brand];
+        return response()->json($result);
+    }
+
+    public function getBrandNameFromCategoryId($category_id)
+    {
+        $available_brand = Category::join('brands', 'categories.brand_id', '=', 'brands.id')
+            ->where('categories.id', '=', $category_id)
+            ->select('categories.*', 'brands.id as brand_id', 'brands.name as brand_name')
+            ->distinct()->get();
+        $result = ["data" => $available_brand];
+        return response()->json($result);
     }
 
     // 삭제하기
@@ -63,7 +99,8 @@ class CategoriesController extends Controller
         $items = Item::where('category_id', '=', $id)->get();
         if (count($items) > 0) {
             return back()->withErrors(['exist' => '삭제하려는 카테고리를 가진 아이템이 존재합니다.']);
-        } else {
+        } 
+        else {
             $category = Category::findOrFail($id);
             $category->delete();
             return redirect('/category');

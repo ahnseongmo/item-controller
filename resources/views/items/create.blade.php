@@ -1,6 +1,6 @@
 @extends('layout.app') @section('title', 'ProductController-CREATE')
 @section("content")
-<section>
+<section class='container'>
     <h2>Item Register</h2>
     <form method="post" action="{{ route('item.store') }}">
         @csrf
@@ -83,39 +83,38 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $("#category_name").on("change", function () {
-            var get_Selected_category = $(this).find(":selected").text().trim();
-            console.log(get_Selected_category);
+        $('#category_name').on('change', function () {
+            var get_Selected_category = $(this).find(':selected').text().trim();
             if (get_Selected_category) {
                 $.ajax({
-                    url: "/brand/by-category/" + get_Selected_category,
-                    type: "GET",
+                    url: '/brand/by-category/' + get_Selected_category,
+                    type: 'GET',
                     // data: { _token: "{{ csrf_token() }}" },
                     // dataType: "json",
                     success: function (data) {
                         console.log(data);
                         if (data) {
-                            $("#brand_id").empty();
-                            $("#brand_id").focus;
-                            $("#brand_id").append(
+                            $('#brand_id').empty();
+                            $('#brand_id').focus;
+                            $('#brand_id').append(
                                 '<option value="">브랜드를 선택해주세요.</option>'
                             );
-                            $.each(data, function (key, value) {
+                            $.each(data['data'], function (key, value) {
                                 $('select[id="brand_id"]').append(
                                     '<option value="' +
                                         value.brand_id +
                                         '">' +
                                         value.brand_name +
-                                        "</option>"
+                                        '</option>'
                                 );
                             });
                         } else {
-                            $("#brand_id").empty();
+                            $('#brand_id').empty();
                         }
                     },
                 });
             } else {
-                $("#brand_id").empty();
+                $('#brand_id').empty();
             }
         });
     });

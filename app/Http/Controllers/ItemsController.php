@@ -18,7 +18,7 @@ class ItemsController extends Controller
         $categories = Category::distinct()->get('name');
         $items = Item::with('category.brand')->get();
         // dd($items);
-        return view('items.index', ['items' => $items, 'categories' => $categories, 'count'=>$items->count()]);
+        return view('items.index', ['items' => $items, 'categories' => $categories, 'count' => $items->count()]);
     }
 
     public function index()
@@ -26,7 +26,7 @@ class ItemsController extends Controller
         $categories = Category::distinct()->get('name');
         $items = Item::get();
         $count = Item::get()->count();
-        return view('items.index', ['items' => $items, 'categories' => $categories, 'count'=>$count]);
+        return view('items.index', ['items' => $items, 'categories' => $categories, 'count' => $count]);
     }
 
     public function create()
@@ -66,7 +66,7 @@ class ItemsController extends Controller
             "message" => "created",
             "user_id" => Auth::user()->id,
         ]);
-        return redirect('/item');
+        return response()->json($item);
     }
 
     // 아이템 수정하기
@@ -111,15 +111,24 @@ class ItemsController extends Controller
         if (!$searched_category_name && !$searched_brand_id) {
             $categories = Category::distinct()->get('name');
             $items = Item::get();
-            return view('items.index')->with(['items' => $items, 'categories' => $categories, 'count'=>$items->count()]);
+            return view('items.index')->with(['items' => $items, 'categories' => $categories, 'count' => $items->count()]);
         } elseif (!$searched_brand_id) {
             $categories = Category::distinct()->get('name');
             $items = Item::joinWithCategoriesAndBrands()->where('categories.name', '=', $searched_category_name)->get();
-            return view('items.index')->with(['items' => $items, 'categories' => $categories, 'count'=>$items->count()]);
+            return view('items.index')->with(['items' => $items, 'categories' => $categories, 'count' => $items->count()]);
         } else {
             $categories = Category::distinct()->get('name');
             $items = Item::joinWithCategoriesAndBrands()->where('categories.name', '=', $searched_category_name)->where('brands.id', '=', $searched_brand_id)->get();
-            return view('items.index')->with(['items' => $items, 'categories' => $categories, 'count'=>$items->count()]);
+            return view('items.index')->with(['items' => $items, 'categories' => $categories, 'count' => $items->count()]);
         }
     }
+
+    public function getAllItems()
+    {
+        $items = Item::get();
+        $count = Item::get()->count();
+        $result = ["data" => $items, "count" => $count];
+        return response()->json($result);
+    }
+
 }

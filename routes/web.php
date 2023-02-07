@@ -16,9 +16,12 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
  */
+
+// Route::get('/', 'App\Http\Controllers\LoginController@index')->name('login');
 Route::middleware(['guest', 'throttle:basic'])->group(function () {
     Route::get('/', [LoginController::class, "index"])->name('login');
-// pages - auth
+    // Route::get('/','LoginController@index') -> name('home.index');
+// pages - auth         
     Route::get('/login', [LoginController::class, "index"])->name('page.login');
     Route::get('/signup', [LoginController::class, "signup"])->name('page.signup');
 // function - auth
@@ -48,12 +51,15 @@ Route::middleware('auth')->group(function () {
 // auth
     Route::get('/logout', [LoginController::class, "logout"])->name('auth.logout');
 // items
+    Route::get('/items', [ItemsController::class, 'getAllItems'])->name('item.getAllItem');
     Route::post('/item/store', [ItemsController::class, "store"])->name('item.store');
     Route::put('/item/{id}', [ItemsController::class, "update"])->name('item.update');
     Route::delete('/item/{id}/delete', [ItemsController::class, "delete"])->name('item.delete');
 // categories
     Route::post('/category', [CategoriesController::class, "store"])->name('category.store');
+    Route::get('/category/detail/{id}', [CategoriesController::class, "getBrandNameFromCategoryId"])->name('category.detail');
     Route::delete('/category/{id}/delete', [CategoriesController::class, "delete"])->name('category.delete');
+    Route::post('/category/detail/edit/{id}', [CategoriesController::class, "edit"])->name('category.edit');
 // brands
     Route::post('/brand', [BrandsController::class, "store"])->name('brand.store');
     Route::delete('/brand/{id}/delete', [BrandsController::class, "delete"])->name('brand.delete');
